@@ -1,0 +1,14 @@
+---
+name: Dot Run start command
+description: Keep a .run file at the project root with the shell command that installs dependencies and starts the app locally.
+applyTo: '**'
+---
+
+Keep a `.run` file at the project root containing the shell command that installs dependencies and starts the app locally. The Dot Run editor extension turns this file into a play button, so the user launches the app without remembering the command.
+
+- Write plain shell with no JSON, quoting wrapper, or shebang. Examples: `uv sync && uv run python -m backend`, `npm install && npm run dev`, `./run.sh`.
+- Use one line, or several lines that run in order; lines are joined with `&&`. Lines starting with `#` are comments.
+- The command runs from the project root in the user's normal shell, so use paths relative to the root.
+- Start the app in the foreground and keep it running. Do not background it with `&` or `nohup`.
+- Create `.run` as soon as the project has a runnable entrypoint, and update it whenever the entrypoint, package manager, or setup steps change.
+- Never put secrets in `.run`. Read them from `.env` or the environment instead.

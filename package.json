@@ -1,10 +1,19 @@
 {
   "name": "runit",
-  "displayName": "Run It",
+  "displayName": "Dot Run",
   "description": "One play button that runs the command your agent wrote to .run",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "levensailor",
   "license": "MIT",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#FFD23F",
+    "theme": "light"
+  },
+  "homepage": "https://github.com/levensailor/runit#readme",
+  "bugs": {
+    "url": "https://github.com/levensailor/runit/issues"
+  },
   "author": {
     "name": "levensailor",
     "url": "https://github.com/levensailor"
@@ -17,14 +26,17 @@
     "vscode": "^1.93.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "AI"
   ],
   "keywords": [
     "run",
     "launch",
     "agent",
     "cursor",
-    "entrypoint"
+    "entrypoint",
+    "dotrun",
+    "AGENTS.md"
   ],
   "main": "./out/extension.js",
   "activationEvents": [
@@ -57,6 +69,26 @@
         "title": "Restart",
         "category": "Run It",
         "icon": "$(debug-restart)"
+      },
+      {
+        "command": "runit.addAgentRule",
+        "title": "Add Agent Rule to AGENTS.md",
+        "category": "Run It"
+      }
+    ],
+    "configuration": {
+      "title": "Dot Run",
+      "properties": {
+        "runit.offerAgentRule": {
+          "type": "boolean",
+          "default": true,
+          "description": "Offer to add the Dot Run section to AGENTS.md in projects that have no .run file yet."
+        }
+      }
+    },
+    "chatInstructions": [
+      {
+        "path": "./prompts/dotrun.instructions.md"
       }
     ],
     "menus": {
@@ -72,6 +104,10 @@
         {
           "command": "runit.restart",
           "when": "runit.hasRunFile"
+        },
+        {
+          "command": "runit.addAgentRule",
+          "when": "workspaceFolderCount > 0"
         }
       ],
       "editor/title/run": [
@@ -101,6 +137,7 @@
     "@types/node": "^20.17.0",
     "@types/vscode": "1.93.0",
     "@vscode/vsce": "^3.2.0",
+    "ovsx": "^1.4.0",
     "typescript": "^5.6.0"
   }
 }

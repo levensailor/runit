@@ -1,5 +1,7 @@
 .github/**
 .cursor/**
+.cursor-plugin/**
+rules/**
 .vscode/**
 .vscode-test/**
 src/**

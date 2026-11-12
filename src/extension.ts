@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { AgentRuleOffer } from './agentRuleOffer';
 import { Logger } from './logger';
 import { RUN_FILE_NAME, readRunCommand, runFileUri } from './runfile';
 import { Runner } from './runner';
@@ -28,6 +29,7 @@ export function activate(context: vscode.ExtensionContext): void {
   statusItem = vscode.window.createStatusBarItem('runit.status', vscode.StatusBarAlignment.Left, 100);
   statusItem.name = EXTENSION_NAME;
   statusItem.command = STATUS_CLICK_COMMAND;
+  const agentRule = new AgentRuleOffer(context, log);
 
   context.subscriptions.push(
     channel,
@@ -43,10 +45,15 @@ export function activate(context: vscode.ExtensionContext): void {
     vscode.commands.registerCommand('runit.stop', () => stopCommand()),
     vscode.commands.registerCommand('runit.restart', () => restartCommand()),
     vscode.commands.registerCommand(STATUS_CLICK_COMMAND, () => statusClick()),
+    vscode.commands.registerCommand('runit.addAgentRule', () => agentRule.runCommand()),
   );
 
   watchFolders();
-  void refresh();
+  void refresh().then(() => agentRule.maybeOffer(foldersWithoutRunFile()));
+}
+
+function foldersWithoutRunFile(): vscode.WorkspaceFolder[] {
+  return (vscode.workspace.workspaceFolders ?? []).filter((folder) => !targetFor(folder));
 }
 
 export function deactivate(): void {

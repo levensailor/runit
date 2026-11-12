@@ -1,0 +1,91 @@
+name: Publish
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    outputs:
+      vsix: ${{ steps.pkg.outputs.vsix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npm test
+      - name: Package
+        id: pkg
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          if [ "$GITHUB_REF_TYPE" = "tag" ] && [ "${GITHUB_REF_NAME#v}" != "$version" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json version $version" >&2
+            exit 1
+          fi
+          vsix="runit-$version.vsix"
+          npx vsce package --out "$vsix"
+          echo "vsix=$vsix" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vsix
+          path: ${{ steps.pkg.outputs.vsix }}
+      - name: GitHub release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "${{ steps.pkg.outputs.vsix }}" \
+            --title "Dot Run $GITHUB_REF_NAME" \
+            --generate-notes
+
+  vscode-marketplace:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          name: vsix
+      - name: Publish to VS Code Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: |
+          if [ -z "$VSCE_PAT" ]; then
+            echo "::warning::VSCE_PAT secret is not set; skipping VS Code Marketplace publish"
+            exit 0
+          fi
+          npm install
+          npx vsce publish --packagePath "${{ needs.package.outputs.vsix }}" --skip-duplicate
+
+  open-vsx:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          name: vsix
+      - name: Publish to Open VSX
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+        run: |
+          if [ -z "$OVSX_PAT" ]; then
+            echo "::warning::OVSX_PAT secret is not set; skipping Open VSX publish"
+            exit 0
+          fi
+          npm install
+          namespace="$(node -p "require('./package.json').publisher")"
+          npx ovsx create-namespace "$namespace" || echo "Namespace $namespace already exists"
+          npx ovsx publish "${{ needs.package.outputs.vsix }}" --skip-duplicate
