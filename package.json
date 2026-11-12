@@ -1,0 +1,106 @@
+{
+  "name": "runit",
+  "displayName": "Run It",
+  "description": "One play button that runs the command your agent wrote to .run",
+  "version": "0.1.0",
+  "publisher": "levensailor",
+  "license": "MIT",
+  "author": {
+    "name": "levensailor",
+    "url": "https://github.com/levensailor"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/levensailor/runit.git"
+  },
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "run",
+    "launch",
+    "agent",
+    "cursor",
+    "entrypoint"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished",
+    "workspaceContains:.run"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "Run It executes the shell command stored in .run, so it requires a trusted workspace."
+    },
+    "virtualWorkspaces": false
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "runit.run",
+        "title": "Run",
+        "category": "Run It",
+        "icon": "$(play)"
+      },
+      {
+        "command": "runit.stop",
+        "title": "Stop",
+        "category": "Run It",
+        "icon": "$(primitive-square)"
+      },
+      {
+        "command": "runit.restart",
+        "title": "Restart",
+        "category": "Run It",
+        "icon": "$(debug-restart)"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "runit.run",
+          "when": "runit.hasRunFile"
+        },
+        {
+          "command": "runit.stop",
+          "when": "runit.isRunning"
+        },
+        {
+          "command": "runit.restart",
+          "when": "runit.hasRunFile"
+        }
+      ],
+      "editor/title/run": [
+        {
+          "command": "runit.run",
+          "when": "runit.hasRunFile",
+          "group": "navigation@0"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "runit.run",
+          "when": "resourceFilename == .run",
+          "group": "navigation@0"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "test": "tsc -p . && node --test out/*.test.js",
+    "package": "vsce package",
+    "vscode:prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "@types/vscode": "1.93.0",
+    "@vscode/vsce": "^3.2.0",
+    "typescript": "^5.6.0"
+  }
+}

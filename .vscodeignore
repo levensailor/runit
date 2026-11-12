@@ -1,0 +1,12 @@
+.github/**
+.cursor/**
+.vscode/**
+.vscode-test/**
+src/**
+out/**/*.test.js
+out/**/*.map
+tsconfig.json
+.gitignore
+CONTRIBUTING.md
+**/*.vsix
+.env
