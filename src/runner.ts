@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import type { Logger } from './logger';
 
 const SHELL_INTEGRATION_TIMEOUT_MS = 3000;
-const TERMINAL_NAME_PREFIX = 'Run It';
+const TERMINAL_NAME_PREFIX = 'Dot Run';
 
 interface Session {
   folder: vscode.WorkspaceFolder;

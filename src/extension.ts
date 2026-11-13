@@ -4,10 +4,10 @@ import { Logger } from './logger';
 import { RUN_FILE_NAME, readRunCommand, runFileUri } from './runfile';
 import { Runner } from './runner';
 
-const EXTENSION_NAME = 'Run It';
-const CONTEXT_HAS_RUN_FILE = 'runit.hasRunFile';
-const CONTEXT_IS_RUNNING = 'runit.isRunning';
-const STATUS_CLICK_COMMAND = 'runit.statusClick';
+const EXTENSION_NAME = 'Dot Run';
+const CONTEXT_HAS_RUN_FILE = 'dotrun.hasRunFile';
+const CONTEXT_IS_RUNNING = 'dotrun.isRunning';
+const STATUS_CLICK_COMMAND = 'dotrun.statusClick';
 
 interface RunTarget {
   folder: vscode.WorkspaceFolder;
@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext): void {
   log.info(`Activated; log file at ${log.logFilePath}`);
 
   runner = new Runner(log);
-  statusItem = vscode.window.createStatusBarItem('runit.status', vscode.StatusBarAlignment.Left, 100);
+  statusItem = vscode.window.createStatusBarItem('dotrun.status', vscode.StatusBarAlignment.Left, 100);
   statusItem.name = EXTENSION_NAME;
   statusItem.command = STATUS_CLICK_COMMAND;
   const agentRule = new AgentRuleOffer(context, log);
@@ -41,11 +41,11 @@ export function activate(context: vscode.ExtensionContext): void {
       watchFolders();
       void refresh();
     }),
-    vscode.commands.registerCommand('runit.run', (uri?: vscode.Uri) => runCommand(uri)),
-    vscode.commands.registerCommand('runit.stop', () => stopCommand()),
-    vscode.commands.registerCommand('runit.restart', () => restartCommand()),
+    vscode.commands.registerCommand('dotrun.run', (uri?: vscode.Uri) => runCommand(uri)),
+    vscode.commands.registerCommand('dotrun.stop', () => stopCommand()),
+    vscode.commands.registerCommand('dotrun.restart', () => restartCommand()),
     vscode.commands.registerCommand(STATUS_CLICK_COMMAND, () => statusClick()),
-    vscode.commands.registerCommand('runit.addAgentRule', () => agentRule.runCommand()),
+    vscode.commands.registerCommand('dotrun.addAgentRule', () => agentRule.runCommand()),
   );
 
   watchFolders();

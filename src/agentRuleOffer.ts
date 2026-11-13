@@ -3,10 +3,10 @@ import { AGENTS_FILE_NAME, hasAgentsSection, stripFrontmatter, upsertAgentsSecti
 import type { Logger } from './logger';
 
 const RULE_SOURCE = ['prompts', 'dotrun.instructions.md'];
-const CONFIG_SECTION = 'runit';
+const CONFIG_SECTION = 'dotrun';
 const CONFIG_OFFER = 'offerAgentRule';
-const NEVER_KEY = 'runit.agentRule.never';
-const DISMISSED_KEY = 'runit.agentRule.dismissed';
+const NEVER_KEY = 'dotrun.agentRule.never';
+const DISMISSED_KEY = 'dotrun.agentRule.dismissed';
 const LISTING_NAME = 'Dot Run';
 
 const ADD = 'Add to AGENTS.md';

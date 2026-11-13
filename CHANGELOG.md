@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0 — 2026-11-12
+
+- feat: rename the extension to dotrun (`levensailor.dotrun`) with Dot Run commands, setting, terminal, and log names, and move the repository to levensailor/dotrun so the project has one name everywhere.
+
 ## 0.2.0 — 2026-11-12
 
 - feat: publish as Dot Run to the VS Code Marketplace and Open VSX from a tag-triggered publish workflow, with a new icon.

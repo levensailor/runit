@@ -1,12 +1,12 @@
 {
   "name": "dotrun",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Teaches the agent to keep a .run file with the project's start command, so the Dot Run extension can launch the app with one click.",
   "author": {
     "name": "levensailor"
   },
-  "homepage": "https://github.com/levensailor/runit",
-  "repository": "https://github.com/levensailor/runit",
+  "homepage": "https://github.com/levensailor/dotrun",
+  "repository": "https://github.com/levensailor/dotrun",
   "license": "MIT",
   "keywords": ["run", "launch", "entrypoint", "agent", "dotrun"],
   "logo": "images/icon.png",

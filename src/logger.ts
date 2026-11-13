@@ -5,7 +5,7 @@ import type { OutputChannel } from 'vscode';
 const MAX_BYTES = 1024 * 1024;
 const BACKUP_COUNT = 3;
 const TIME_ZONE = 'America/New_York';
-const LOG_FILE_NAME = 'runit.log';
+const LOG_FILE_NAME = 'dotrun.log';
 
 type Level = 'DEBUG' | 'INFO' | 'WARN' | 'ERROR';
 
@@ -79,7 +79,7 @@ export class Logger {
       this.rotateIfNeeded(Buffer.byteLength(entry) + 1);
       fs.appendFileSync(this.filePath, entry + '\n');
     } catch (err) {
-      console.error(`Run It: failed to write log file ${this.filePath}`, err);
+      console.error(`Dot Run: failed to write log file ${this.filePath}`, err);
     }
   }
 

@@ -27,4 +27,4 @@
    gh pr create
    ```
 
-   In the description, explain why the change belongs in Run It: the problem it solves, who hits it, and how you verified it. Feature changes should also add a dated entry to `CHANGELOG.md`.
+   In the description, explain why the change belongs in Dot Run: the problem it solves, who hits it, and how you verified it. Feature changes should also add a dated entry to `CHANGELOG.md`.

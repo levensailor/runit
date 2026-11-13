@@ -28,7 +28,7 @@ jobs:
             echo "Tag $GITHUB_REF_NAME does not match package.json version $version" >&2
             exit 1
           fi
-          vsix="runit-$version.vsix"
+          vsix="dotrun-$version.vsix"
           npx vsce package --out "$vsix"
           echo "vsix=$vsix" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@v4
